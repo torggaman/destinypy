@@ -4,7 +4,8 @@ class character():
         self.race = ""
         self.job = ""
         self.subjob = ""
-        
+
+
 class player(character):
     def __init__(self):
         character.__init__(self)
@@ -18,17 +19,41 @@ class player(character):
         if self.experience >= 1000 & self.explevel:
             self.explevel += 1
             self.experience -= 1000
-        self.attack = 1 
-    def status(self):
-        print("Name: %s" % self.name)
-        print("Class: %s" % self.job)
-        print("Subclass: %s" % self.subjob)
-    def menu(self):
-        return
-    def createcharacter(self):
-        self.name = input("Character Name: ")
-        self.job = 
+        self.attack = 1
+        self.made = 0
 
+    def status(self):
+        if self.made == 1:
+            print("Name: %s" % self.name)
+            print("Race: %s" % self.race)
+            print("Class: %s" % self.job)
+            print("Subclass: %s" % self.subjob)
+            print("Level: %s" % self.level)
+        else:
+            print("Please make a character.")
+
+    def createcharacter(self):
+        if self.made == 0:
+            self.name = input("Character Name: ")
+            self.race = input("Choose a race 'Human', 'Awoken', or 'Exo': ")
+            while self.race != ("Human" or "Awoken" or "Exo"):
+                self.race = input("Choose a race 'Human', 'Awoken', or 'Exo': ")
+            self.job = input("Choose a Class 'Titan', 'Hunter', or 'Warlock': ")
+            if self.job == "Titan":
+                while self.subjob != ("Striker" or "Defender"):
+                    self.subjob = input("Choose either 'Striker' or 'Defender': ")
+            elif self.job == "Warlock":
+                while self.subjob != ("Sunsinger" or "Voidwalker"):
+                    self.subjob = input("Choose either 'Sunsinger' or 'Voidwalker': ")
+            elif self.job == "Hunter":
+                while self.subjob != ("Gunslinger" or "Bladedancer"):
+                    self.subjob = input("Choose either 'Gunslinger' or 'Bladedancer': ")
+            self.made += 1
+        else:
+            print("You already have a character.")
+
+    def help(self):
+        print(Commands.keys())
         
 p = player()
 
@@ -39,22 +64,24 @@ usrpass = input("Password: ")
 print("Connecting to Destiny servers...")
 print("Connection Sucessful")
 print("Downloading Character data")
+print("Type: help \n for a list of commands")
 
 Commands = { 
     'status': player.status, 
-    'create character': player.createcharacter(self),
+    'create character': player.createcharacter,
+    'help': player.help,
     }
 
 
-while(p.health > 0):
-  line = input("> ")
-  args = line.split()
-  if len(args) > 0:
-    commandFound = False
-    for c in Commands.keys():
-      if args[0] == c[:len(args[0])]:
-        Commands[c](p)
-        commandFound = True
-        break
-    if not commandFound:
-      print("%s doesn't understand the suggestion." % p.name)
+while p.health > 0:
+    line = input("> ")
+    args = line.split()
+    if len(args) > 0:
+        commandFound = False
+        for c in Commands.keys():
+            if args[0] == c[:len(args[0])]:
+                Commands[c](p)
+                commandFound = True
+                break
+        if not commandFound:
+            print("%s doesn't understand the suggestion." % p.name)
