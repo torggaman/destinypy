@@ -80,6 +80,17 @@ class player(character):
                     self.destination = "Moon"
                     self.currentmap = ""
                     print("Initiating Warp Drive")
+                    print("Welcome to the Moon")
+                elif answer == "Venus":
+                    self.destination = "Venus"
+                    self.currentmap = ""
+                    print("Initiating Warp Drive")
+                    print("Welcome to Venus")
+                elif answer == "Mars":
+                    self.destination = "Mars"
+                    self.currentmap = ""
+                    print("Initiating Warp Drive")
+                    print("Welcome to Mars")
         else:
             print("Make a character first.")
 
