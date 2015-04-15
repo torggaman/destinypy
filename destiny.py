@@ -129,15 +129,47 @@ class player(character):
                     self.armor = equiparmor
                     armorinv.remove(equiparmor)
 
+    def explore(self):
+        if self.made == 0:
+            print("Make a character first.")
+        else:
+            if self.destination == "Tower":
+                line = input("> ")
+                args = line.split()
+                if len(args) > 0:
+                    commandFound = False
+                    for c in towerd.keys():
+                        if args[0] == c[:len(args[0])]:
+                            towerd[c](p)
+                            commandFound = True
+                            break
+                    if not commandFound:
+                        print("%s doesn't understand the suggestion." % p.name)
+
+    def shop(self):
+        if self.glimmer == 0:
+            print("What would you like?")
+            shopping = input("Weapons or Armor: ")
+
+    def view(self):
+        if self.destination == "Tower":
+            print("You look around the Tower.")
+
+towerd = {
+    "shop": player.shop,
+    "view": player.view,
+    }
+
+
 race = {"Human", "Awoken", "Exo", }
 
 job = {"Titan", "Hunter", "Warlock", }
 
 inventory2 = ["item 1", "item 2", ]
 
-weaponinv = ["Word of Crota", "Fatebringer", "Atheon's Timepiece", ]
+weaponinv = ["Starter Hand Cannon", ]
 
-armorinv = ["Starter Set", "Vanguard Set", ]
+armorinv = ["Starter Set", ]
 
 planets = ["Tower", "Earth", "Moon", "Venus", "Mars", ]
 
@@ -145,12 +177,8 @@ p = player()
 
 
 print("Welcome to Destiny")
-print("Login Please")
-username = input("Login: ")
-usrpass = input("Password: ")
 print("Connecting to Destiny servers...")
 print("Connection Successful")
-print("Downloading Character data")
 print("Type: help \n for a list of commands")
 
 Cmd = {
@@ -159,7 +187,8 @@ Cmd = {
     "help": player.help,
     "travel": player.travel,
     "inventory": player.inventory,
-    "equip": player.equip
+    "equip": player.equip,
+    "explore": player.explore
     }
 
 
