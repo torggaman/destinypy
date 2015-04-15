@@ -26,6 +26,8 @@ class player(character):
         self.vanguardmarks = 1
         self.commendations = 1
         self.made = 0
+        self.primaryw = ""
+        self.armor = ""
 
     def status(self):
         if self.made == 1:
@@ -34,6 +36,7 @@ class player(character):
             print("Class: %s" % self.job)
             print("Subclass: %s" % self.subjob)
             print("Level: %s" % self.level)
+            print("Primary: %s" % self.primaryw)
         else:
             print("Please make a character.")
 
@@ -53,7 +56,7 @@ class player(character):
             print("You already have a character.")
 
     def help(self):
-        print(Commands.keys())
+        print(Cmd.keys())
 
     def travel(self):
         if self.made == 1:
@@ -93,9 +96,53 @@ class player(character):
                     print("Welcome to Mars")
         else:
             print("Make a character first.")
+            
+    def inventory(self):
+        print(inventory2)
 
-planets = ["Tower", "Earth", "Moon", "Venus", "Mars"]
+    def equip(self):
+        if self.made != 1:
+            print("Create a character first.")
+        else:
+            print("What would you like to equip?")
+            liste = input("Weapon or Armor: ")
+            if liste == "Weapon":
+                print("Choose a weapon from below")
+                print(weaponinv)
+                equipweapon = input("Select One: ")
+                if self.primaryw == "":
+                    self.primaryw = equipweapon
+                    weaponinv.remove(equipweapon)
+                else:
+                    weaponinv.append(self.primaryw)
+                    self.primaryw = equipweapon
+                    weaponinv.remove(equipweapon)
+            if liste == "Armor":
+                print("Choose which armor you want to equip")
+                print(armorinv)
+                equiparmor = input("Select one: ")
+                if self.armor == "":
+                    self.armor = equiparmor
+                    armorinv.remove(equiparmor)
+                else:
+                    armorinv.append(self.armor)
+                    self.armor = equiparmor
+                    armorinv.remove(equiparmor)
+
+race = {"Human", "Awoken", "Exo", }
+
+job = {"Titan", "Hunter", "Warlock", }
+
+inventory2 = ["item 1", "item 2", ]
+
+weaponinv = ["Word of Crota", "Fatebringer", "Atheon's Timepiece", ]
+
+armorinv = ["Starter Set", "Vanguard Set", ]
+
+planets = ["Tower", "Earth", "Moon", "Venus", "Mars", ]
+
 p = player()
+
 
 print("Welcome to Destiny")
 print("Login Please")
@@ -106,24 +153,25 @@ print("Connection Successful")
 print("Downloading Character data")
 print("Type: help \n for a list of commands")
 
-Commands = {
-    'status': player.status,
-    'create character': player.createcharacter,
-    'help': player.help,
-    'travel': player.travel,
-
+Cmd = {
+    "status": player.status,
+    "create character": player.createcharacter,
+    "help": player.help,
+    "travel": player.travel,
+    "inventory": player.inventory,
+    "equip": player.equip
     }
 
 
-while(p.health > 0):
-  line = input("> ")
-  args = line.split()
-  if len(args) > 0:
-    commandFound = False
-    for c in Commands.keys():
-      if args[0] == c[:len(args[0])]:
-        Commands[c](p)
-        commandFound = True
-        break
-    if not commandFound:
-      print("%s doesn't understand the suggestion." % p.name)
+while p.health > 0:
+    line = input("> ")
+    args = line.split()
+    if len(args) > 0:
+        commandFound = False
+        for c in Cmd.keys():
+            if args[0] == c[:len(args[0])]:
+                Cmd[c](p)
+                commandFound = True
+                break
+        if not commandFound:
+            print("%s doesn't understand the suggestion." % p.name)
