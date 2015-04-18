@@ -25,7 +25,11 @@ class player(character):
         self.commendations = 1
         self.made = 0
         self.primaryw = ""
-        self.armor = ""
+        self.specialw = ""
+        self.heavyw = ""
+        self.armorh = ""
+        self.armorc = ""
+        self.armorl = ""
 
     def levelup(self):
         if self.experience >= 1000:
@@ -73,16 +77,24 @@ class player(character):
     def choosesubjob(self):
         if self.job == "Titan":
             self.subjob = input("Choose a Subclass 'Defender' or 'Striker': ")
+            if self.subjob != "Defender" or "Striker":
+                print(invalidinput)
+                self.choosesubjob()
         elif self.job == "Warlock":
             self.subjob = input("Choose a Subclass 'Sunsinger' or 'Voidwalker': ")
+            if self.subjob != "Sunsinger" or "Voidwalker":
+                print(invalidinput)
+                self.choosesubjob()
         elif self.job == "Hunter":
             self.subjob = input("Choose a Subclass 'Gunslinger' or 'Bladedancer': ")
+            if self.subjob != "Gunslinger" or "Bladedancer":
+                print(invalidinput)
+                self.choosesubjob()
         self.made += 1
         self.destination = "Earth"
         del Cmd['new game']
         Cmd['go to orbit'] = player.orbit
         Cmd['travel'] = player.travel
-
 
     def help1(self):
         print(Cmd.keys())
@@ -138,54 +150,86 @@ class player(character):
                 print("Go to Orbit first")
         else:
             print("Make a character first.")
-            
+
     def inventory(self):
-        print(inventory2)
         print("%s glimmer" % self.glimmer)
         print("%s vanguard marks" % self.vanguardmarks)
         print("%s Motes of light" % self.moteoflight)
+        print(inventory2)
+        print("Headgear/n", armorhinv)
+        print(armorcinv)
+        print(armorlinv)
 
     def equip(self):
-        if self.made != 1:
-            print("Create a character first.")
-        else:
-            print("What would you like to equip?")
-            liste = input("Weapon or Armor: ")
-            if liste == "Weapon":
-                print("Choose a weapon from below")
-                print(weaponinv)
-                equipweapon = input("Select One: ")
-                if self.primaryw == "":
-                    self.primaryw = equipweapon
-                    weaponinv.remove(equipweapon)
-                else:
-                    weaponinv.append(self.primaryw)
-                    self.primaryw = equipweapon
-                    weaponinv.remove(equipweapon)
-            elif liste == "Armor":
+        print("What would you like to equip?")
+        liste = input("Weapon or Armor: ")
+        if liste == "Weapon":
+            print("Choose a weapon from below")
+            print(weaponinv)
+            equipweapon = input("Select One: ")
+            if self.primaryw == "":
+                self.primaryw = equipweapon
+                weaponinv.remove(equipweapon)
+            else:
+                weaponinv.append(self.primaryw)
+                self.primaryw = equipweapon
+                weaponinv.remove(equipweapon)
+        elif liste == "Armor":
+            list1 = input("Head, Chest, or Legs? ")
+            if list1 == "Head":
                 print("Choose which armor you want to equip")
-                print(armorinv)
+                print(armorhinv)
                 equiparmor = input("Select one: ")
-                if self.armor == "":
-                    self.armor = equiparmor
-                    armorinv.remove(equiparmor)
+                if armorhinv == equiparmor:
+                    if self.armorh == "":
+                        self.armorh = equiparmor
+                        armorhinv.remove(equiparmor)
+                    else:
+                        armorhinv.append(self.armorh)
+                        self.armorh = equiparmor
+                        armorhinv.remove(equiparmor)
                 else:
-                    armorinv.append(self.armor)
-                    self.armor = equiparmor
-                    armorinv.remove(equiparmor)
+                    print(invalidinput)
+            elif list1 == "Chest":
+                print("Choose which armor you want to equip")
+                print(armorcinv)
+                equiparmor = input("Select one: ")
+                if armorcinv == equiparmor:
+                    if self.armorc == "":
+                        self.armorc = equiparmor
+                        armorcinv.remove(equiparmor)
+                    else:
+                        armorcinv.append(self.armorc)
+                        self.armorc = equiparmor
+                        armorcinv.remove(equiparmor)
+                else:
+                    print(invalidinput)
+            elif list1 == "Legs":
+                print("Choose which armor you want to equip")
+                print(armorlinv)
+                equiparmor = input("Select one: ")
+                if armorlinv == equiparmor:
+                    if self.armorl == "":
+                        self.armorl = equiparmor
+                        armorlinv.remove(equiparmor)
+                    else:
+                        armorlinv.append(self.armorl)
+                        self.armorl = equiparmor
+                        armorlinv.remove(equiparmor)
+                else:
+                    print(invalidinput)
             else:
                 print(invalidinput)
+        else:
+            print(invalidinput)
 
     def explore(self):
-        if self.made == 0:
-            print("Make a character first.")
+        if self.destination == "Tower":
+            print("Looks like there are some shops to visit")
+        elif self.destination == "Earth":
+            print("Lets explore Earth!")
         else:
-            if self.destination == "Tower":
-                print("Looks like there are some shops to visit")
-            elif self.destination == "Earth":
-                print("Lets explore Earth!")
-            else:
-                print("travel to another destination.")
+            print("travel to another destination.")
 
     def shop(self):
         if self.glimmer >= 0:
@@ -201,13 +245,35 @@ class player(character):
                 else:
                     print("You do not have enough glimmer for %s" % purchase1)
             elif shopping == "armor":
-                print(armorshop)
-                purchase = input("Please choose a armor set: ")
-                if self.glimmer >= armorshop[purchase]:
-                    self.glimmer -= armorshop[purchase]
-                    armorinv.append(purchase)
+                list1 = input("head, chest, or legs?")
+                if list1 == "head":
+                    print(armorhshop)
+                    purchase = input("Please choose a armor set: ")
+                    if self.glimmer >= armorhshop[purchase]:
+                        self.glimmer -= armorhshop[purchase]
+                        armorhinv.append(purchase)
+                    else:
+                        print("You do not have enough glimmer for %s" % purchase)
+                elif list1 == "chest":
+                    print(armorcshop)
+                    purchase = input("Please choose a armor set: ")
+                    if self.glimmer >= armorcshop[purchase]:
+                        self.glimmer -= armorcshop[purchase]
+                        armorcinv.append(purchase)
+                    else:
+                        print("You do not have enough glimmer for %s" % purchase)
+                elif list1 == "legs":
+                    print(armorlshop)
+                    purchase = input("Please choose a armor set: ")
+                    if self.glimmer >= armorlshop[purchase]:
+                        self.glimmer -= armorlshop[purchase]
+                        armorlinv.append(purchase)
+                    else:
+                        print("You do not have enough glimmer for %s" % purchase)
                 else:
-                    print("You do not have enough glimmer for %s" % purchase)
+                    print(invalidinput)
+            else:
+                print(invalidinput)
         else:
             print("You should gather more glimmer")
 
@@ -224,7 +290,7 @@ class player(character):
     def view(self):
         if self.destination == "Tower":
             print("You look at the view from the Tower.")
-            
+
     def giveexp(self):
         print("How much experience?")
         exp = input()
@@ -257,7 +323,7 @@ class player(character):
         print("Destiny")
         print("We called it, The Traveler, and its arrival changed us forever.")
         print("Great cities were built on Mars and Venus, Mercury became a garden world, human life-span tripled,")
-        print("it was a time of mirecles.")
+        print("it was a time of miracles.")
         print("We stared out at the galaxy and knew that it was our destiny to walk the light of other stars,")
         print("but the Traveler had an enemy.")
         t1 = input()
@@ -266,15 +332,63 @@ class player(character):
         print("But it was also a beginning./n")
         self.createcharacter()
 
+
+class monster():
+    def __init__(self):
+        self.monsterrace = ""
+        self.subclass = ""
+        self.health = 1
+        self.defense = 1
+        self.attack = 1
+        self.level = 1
+        self.status = "Normal"
+        self.loot = []
+        self.glimmer = 1
+
+
+class armor():
+    def __int__(self):
+        self.name = ""
+        self.job = ""
+        self.defense = 1
+        self.light = 1
+        self.discipline = 1
+        self.intellect = 1
+        self.strength = 1
+
+
+class weapon():
+    def __init__(self):
+        self.name = ""
+        self.typew = ""
+        self.guntype = ""
+        self.attack = ""
+        self.ammoclip = 1
+        self.maxammo = 1
+        self.rof = 1
+        self.impact = 1
+        self.range = 1
+        self.stability = 1
+        self.reload = 1
+
+
 invalidinput = "Invalid input, please try again"
 race = ["Human", "Awoken", "Exo", ]
 job = ["Titan", "Hunter", "Warlock", ]
 inventory2 = []
 weaponinv = []
-armorinv = []
+primaryw = []
+specialw = []
+heavyw = []
+armorhinv = []
+armorcinv = []
+armorlinv = []
 planets = ["tower", "earth", "moon", "venus", "mars", ]
 weaponshop = {'Hawkmoon': 2000, }
-armorshop = {'VoG set': 4000, }
+armorhshop = {'VoG Head': 4000, }
+armorcshop = {'VoG Chest': 3000, }
+armorlshop = {'VoG Legs': 2000, }
+
 
 p = player()
 
