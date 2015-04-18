@@ -67,34 +67,33 @@ class player(character):
     def chooserace(self):
         print(race)
         self.race = input("Choose a Race: ")
+        if self.race == "":
+            self.chooserace()
         self.choosejob()
 
     def choosejob(self):
         print(job)
         self.job = input("Choose a Class: ")
+        if self.job == "":
+            self.choosejob()
         self.choosesubjob()
 
     def choosesubjob(self):
         if self.job == "Titan":
             self.subjob = input("Choose a Subclass 'Defender' or 'Striker': ")
-            if self.subjob != "Defender" or "Striker":
-                print(invalidinput)
-                self.choosesubjob()
         elif self.job == "Warlock":
             self.subjob = input("Choose a Subclass 'Sunsinger' or 'Voidwalker': ")
-            if self.subjob != "Sunsinger" or "Voidwalker":
-                print(invalidinput)
-                self.choosesubjob()
         elif self.job == "Hunter":
             self.subjob = input("Choose a Subclass 'Gunslinger' or 'Bladedancer': ")
-            if self.subjob != "Gunslinger" or "Bladedancer":
-                print(invalidinput)
-                self.choosesubjob()
+        elif self.subjob == "":
+            self.choosesubjob()
         self.made += 1
         self.destination = "Earth"
         del Cmd['new game']
-        Cmd['go to orbit'] = player.orbit
+        Cmd['orbit'] = player.orbit
         Cmd['travel'] = player.travel
+        Cmd['equip'] = player.equip
+        Cmd['inventory'] = player.inventory
 
     def help1(self):
         print(Cmd.keys())
@@ -156,9 +155,9 @@ class player(character):
         print("%s vanguard marks" % self.vanguardmarks)
         print("%s Motes of light" % self.moteoflight)
         print(inventory2)
-        print("Headgear/n", armorhinv)
-        print(armorcinv)
-        print(armorlinv)
+        print("Headgear \n", armorhinv)
+        print("Chest \n", armorcinv)
+        print("Legs \n", armorlinv)
 
     def equip(self):
         print("What would you like to equip?")
@@ -318,18 +317,20 @@ class player(character):
         print("The Planet Mars")
         print("The explorers check and adjust their gear")
         print("They begin setting out to look for something")
-        print("They travel quite a distance before walking up /na hill to discover a larger floating orb")
+        print("They travel quite a distance before walking up")
+        print("a hill to discover a larger floating orb")
         t1 = input()
         print("Destiny")
         print("We called it, The Traveler, and its arrival changed us forever.")
-        print("Great cities were built on Mars and Venus, Mercury became a garden world, human life-span tripled,")
-        print("it was a time of miracles.")
-        print("We stared out at the galaxy and knew that it was our destiny to walk the light of other stars,")
-        print("but the Traveler had an enemy.")
+        print("Great cities were built on Mars and Venus, Mercury became a garden world, ")
+        print("human life-span tripled, it was a time of miracles.")
+        print("We stared out at the galaxy and knew that it was our destiny")
+        print("to walk the light of other stars, but the Traveler had an enemy.")
         t1 = input()
         print("A Darkness, which had hunted it for eons across the black gulf of space.")
-        print("Centuries after our Golden Age began, this Darkness found us and that was the end of everything.")
-        print("But it was also a beginning./n")
+        print("Centuries after our Golden Age began, this Darkness found us ")
+        print("and that was the end of everything.")
+        print("But it was also a beginning. \n")
         self.createcharacter()
 
 
