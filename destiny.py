@@ -1,3 +1,5 @@
+
+
 class character():
     def __init__(self):
         self.name = ""
@@ -11,7 +13,7 @@ class character():
 class player(character):
     def __init__(self):
         character.__init__(self)
-        self.status = ""
+        self.state = ""
         self.health = 1
         self.defense = 1
         self.light = 1
@@ -47,49 +49,97 @@ class player(character):
                     self.levelup()
 
     def status(self):
-        if self.made == 1:
-            print("Name: %s" % self.name)
-            print("Race: %s" % self.race)
-            print("Class: %s" % self.job)
-            print("Subclass: %s" % self.subjob)
-            print("Level: %s" % self.explevel)
+        print("Name: %s" % self.name)
+        print("Race: %s" % self.race)
+        print("Class: %s" % self.job)
+        print("Subclass: %s" % self.subjob)
+        print("Level: %s" % self.explevel)
+        print("'weapons' 'armor' or close'")
+        status1 = input("Select one: ")
+        if status1 == "weapons":
             print("Primary: %s" % self.primaryw)
+            print("Special: %s" % self.specialw)
+            print("Heavy: %s" % self.heavyw)
+            print("\n")
+            self.status()
+        elif status1 == "armor":
+            print("Helmet: %s" % self.armorh)
+            print("Chest: %s" % self.armorc)
+            print("Legs: %s" % self.armorl)
+            print("\n")
+            self.status()
         else:
-            print("Please make a character.")
+            print("Menu closed")
 
     def createcharacter(self):
-        if self.made == 0:
             self.name = input("Character Name: ")
             self.chooserace()
-        else:
-            print("You already have a character.")
 
     def chooserace(self):
         print(race)
-        self.race = input("Choose a Race: ")
-        if self.race == "":
+        selectrace = input("Choose a Race: ")
+        if selectrace == "":
+            print(self.race)
+            self.chooserace()
+        elif selectrace == "Human":
+            self.race = selectrace
+        elif selectrace == "Awoken":
+            self.race = selectrace
+        elif selectrace == "Exo":
+            self.race = selectrace
+        else:
             self.chooserace()
         self.choosejob()
 
     def choosejob(self):
         print(job)
-        self.job = input("Choose a Class: ")
-        if self.job == "":
+        selectjob = input("Choose a Class: ")
+        if selectjob == "":
+            self.choosejob()
+        elif selectjob == "Titan":
+            self.job = selectjob
+        elif selectjob == "Hunter":
+            self.job = selectjob
+        elif selectjob == "Warlock":
+            self.job = selectjob
+        else:
             self.choosejob()
         self.choosesubjob()
 
     def choosesubjob(self):
         if self.job == "Titan":
-            self.subjob = input("Choose a Subclass 'Defender' or 'Striker': ")
+            selectsubjob = input("Choose a Subclass 'Defender' or 'Striker': ")
+            if selectsubjob == "Defender":
+                self.subjob = selectsubjob
+            elif selectsubjob == "Striker":
+                self.subjob = selectsubjob
+            else:
+                self.choosesubjob()
         elif self.job == "Warlock":
-            self.subjob = input("Choose a Subclass 'Sunsinger' or 'Voidwalker': ")
+            selectsubjob = input("Choose a Subclass 'Sunsinger' or 'Voidwalker': ")
+            if selectsubjob == "Sunsinger":
+                self.subjob = selectsubjob
+            elif selectsubjob == "Voidwalker":
+                self.subjob = selectsubjob
+            else:
+                self.choosesubjob()
         elif self.job == "Hunter":
-            self.subjob = input("Choose a Subclass 'Gunslinger' or 'Bladedancer': ")
-        elif self.subjob == "":
+            selectsubjob = input("Choose a Subclass 'Gunslinger' or 'Bladedancer': ")
+            if selectsubjob == "Gunslinger":
+                self.subjob = selectsubjob
+            elif selectsubjob == "Bladedancer":
+                self.subjob = selectsubjob
+            else:
+                self.choosesubjob()
+        else:
             self.choosesubjob()
+        self.charactercomplete()
+
+    def charactercomplete(self):
         self.made += 1
         self.destination = "Earth"
         del Cmd['new game']
+        Cmd['status'] = player.status
         Cmd['orbit'] = player.orbit
         Cmd['travel'] = player.travel
         Cmd['equip'] = player.equip
@@ -154,28 +204,71 @@ class player(character):
         print("%s glimmer" % self.glimmer)
         print("%s vanguard marks" % self.vanguardmarks)
         print("%s Motes of light" % self.moteoflight)
-        print(inventory2)
-        print("Headgear \n", armorhinv)
-        print("Chest \n", armorcinv)
-        print("Legs \n", armorlinv)
+        print("Primary WeaponsL \n", primarywinv)
+        print("Special Weapons: \n", specialwinv)
+        print("Heavy Weapons: \n", heavywinv)
+        print("Headgear: \n", armorhinv)
+        print("Chest: \n", armorcinv)
+        print("Legs: \n", armorlinv)
 
     def equip(self):
         print("What would you like to equip?")
-        liste = input("Weapon or Armor: ")
-        if liste == "Weapon":
-            print("Choose a weapon from below")
-            print(weaponinv)
-            equipweapon = input("Select One: ")
-            if self.primaryw == "":
-                self.primaryw = equipweapon
-                weaponinv.remove(equipweapon)
+        liste = input("weapon or armor: ")
+        if liste == "weapon":
+            liste = input("primary, special, or heavy? ")
+            if liste == "primary":
+                print("Choose a Primary weapon from below")
+                print(primarywinv)
+                equipweapon = input("Select One: ")
+                if equipweapon == primarywinv:
+                    if self.primaryw == "":
+                        self.primaryw = equipweapon
+                        primarywinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                    else:
+                        primarywinv.append(self.primaryw)
+                        self.primaryw = equipweapon
+                        primarywinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                else:
+                    print(invalidinput)
+            elif liste == "special":
+                print("Choose a Special weapon from below")
+                print(specialwinv)
+                equipweapon = input("Select One: ")
+                if equipweapon == specialwinv:
+                    if self.specialw == "":
+                        self.specialw = equipweapon
+                        specialwinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                    else:
+                        specialwinv.append(self.specialw)
+                        self.specialw = equipweapon
+                        specialwinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                else:
+                    print(invalidinput)
+            elif liste == "heavy":
+                print("Choose a Special weapon from below")
+                print(heavywinv)
+                equipweapon = input("Select One: ")
+                if equipweapon == heavywinv:
+                    if self.heavyw == "":
+                        self.heavyw = equipweapon
+                        heavywinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                    else:
+                        heavywinv.append(self.heavyw)
+                        self.heavyw = equipweapon
+                        heavywinv.remove(equipweapon)
+                        print("Equipped: %s" % equipweapon)
+                else:
+                    print(invalidinput)
             else:
-                weaponinv.append(self.primaryw)
-                self.primaryw = equipweapon
-                weaponinv.remove(equipweapon)
-        elif liste == "Armor":
-            list1 = input("Head, Chest, or Legs? ")
-            if list1 == "Head":
+                print(invalidinput)
+        elif liste == "armor":
+            list1 = input("head, chest, or legs? ")
+            if list1 == "head":
                 print("Choose which armor you want to equip")
                 print(armorhinv)
                 equiparmor = input("Select one: ")
@@ -189,7 +282,7 @@ class player(character):
                         armorhinv.remove(equiparmor)
                 else:
                     print(invalidinput)
-            elif list1 == "Chest":
+            elif list1 == "chest":
                 print("Choose which armor you want to equip")
                 print(armorcinv)
                 equiparmor = input("Select one: ")
@@ -203,7 +296,7 @@ class player(character):
                         armorcinv.remove(equiparmor)
                 else:
                     print(invalidinput)
-            elif list1 == "Legs":
+            elif list1 == "legs":
                 print("Choose which armor you want to equip")
                 print(armorlinv)
                 equiparmor = input("Select one: ")
@@ -378,12 +471,12 @@ race = ["Human", "Awoken", "Exo", ]
 job = ["Titan", "Hunter", "Warlock", ]
 inventory2 = []
 weaponinv = []
-primaryw = []
-specialw = []
-heavyw = []
-armorhinv = []
-armorcinv = []
-armorlinv = []
+primarywinv = ['test1', ]
+specialwinv = ['test1', ]
+heavywinv = ['test1', ]
+armorhinv = ['test1', ]
+armorcinv = ['test1', ]
+armorlinv = ['test1', ]
 planets = ["tower", "earth", "moon", "venus", "mars", ]
 weaponshop = {'Hawkmoon': 2000, }
 armorhshop = {'VoG Head': 4000, }
