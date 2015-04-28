@@ -79,71 +79,80 @@ class player(character):
         print(race)
         selectrace = input("Choose a Race: ")
         if selectrace == "":
-            print(self.race)
-            self.chooserace()
+            print("Make sure you type it as displayed")
         elif selectrace == "Human":
             self.race = selectrace
+            self.choosejob()
         elif selectrace == "Awoken":
             self.race = selectrace
+            self.choosejob()
         elif selectrace == "Exo":
             self.race = selectrace
+            self.choosejob()
         else:
-            self.chooserace()
-        self.choosejob()
+            print("Make sure you type it as displayed")
 
     def choosejob(self):
         print(job)
         selectjob = input("Choose a Class: ")
         if selectjob == "":
-            self.choosejob()
+            print("Make sure you type it as displayed")
         elif selectjob == "Titan":
             self.job = selectjob
+            self.choosesubjob()
         elif selectjob == "Hunter":
             self.job = selectjob
+            self.choosesubjob()
         elif selectjob == "Warlock":
             self.job = selectjob
+            self.choosesubjob()
         else:
-            self.choosejob()
-        self.choosesubjob()
+            print("Make sure you type it as displayed")
 
     def choosesubjob(self):
         if self.job == "Titan":
             selectsubjob = input("Choose a Subclass 'Defender' or 'Striker': ")
             if selectsubjob == "Defender":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             elif selectsubjob == "Striker":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             else:
-                self.choosesubjob()
+                print("Make sure you type it as displayed")
         elif self.job == "Warlock":
             selectsubjob = input("Choose a Subclass 'Sunsinger' or 'Voidwalker': ")
             if selectsubjob == "Sunsinger":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             elif selectsubjob == "Voidwalker":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             else:
-                self.choosesubjob()
+                print("Make sure you type it as displayed")
         elif self.job == "Hunter":
             selectsubjob = input("Choose a Subclass 'Gunslinger' or 'Bladedancer': ")
             if selectsubjob == "Gunslinger":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             elif selectsubjob == "Bladedancer":
                 self.subjob = selectsubjob
+                self.charactercomplete()
             else:
-                self.choosesubjob()
+                print("Make sure you type it as displayed")
         else:
-            self.choosesubjob()
-        self.charactercomplete()
+            print("Make sure you type it as displayed")
 
     def charactercomplete(self):
         self.made += 1
         self.destination = "Earth"
-        del Cmd['new game']
+        del Cmd['create character']
         Cmd['status'] = player.status
         Cmd['orbit'] = player.orbit
         Cmd['travel'] = player.travel
         Cmd['equip'] = player.equip
         Cmd['inventory'] = player.inventory
+        Cmd['debug'] = player.debugcommand
 
     def help1(self):
         print(Cmd.keys())
@@ -204,7 +213,7 @@ class player(character):
         print("%s glimmer" % self.glimmer)
         print("%s vanguard marks" % self.vanguardmarks)
         print("%s Motes of light" % self.moteoflight)
-        print("Primary WeaponsL \n", primarywinv)
+        print("Primary Weapons: \n", primarywinv)
         print("Special Weapons: \n", specialwinv)
         print("Heavy Weapons: \n", heavywinv)
         print("Headgear: \n", armorhinv)
@@ -317,9 +326,74 @@ class player(character):
 
     def explore(self):
         if self.destination == "Tower":
-            print("Looks like there are some shops to visit")
+            if self.currentmap == "Tower Watch":
+                print("Current Area: ", self.currentmap)
+                print("Tower Hanger, Tower North, Traveler's Walk, or Hall of Guardians")
+                list1 = input("Choose a location: ")
+                self.currentmap = list1
+            elif self.currentmap == "Tower Hangar":
+                print("Current Area: ", self.currentmap)
+                print("Return?")
+                list1 = input("yes or no: ")
+                if list1 == "yes":
+                    self.currentmap = "Tower Watch"
+            elif self.currentmap == "Tower North":
+                print("Current Area: ", self.currentmap)
+                print("Return?")
+                list1 = input("yes or no: ")
+                if list1 == "yes":
+                    self.currentmap = "Tower Watch"
+            elif self.currentmap == "Traveler's Walk":
+                print("Current Area: ", self.currentmap)
+                print("Return?")
+                list1 = input("yes or no: ")
+                if list1 == "yes":
+                    self.currentmap = "Tower Watch"
+            elif self.currentmap == "Hall of Guardians":
+                print("Current Area: ", self.currentmap)
+                print("Return?")
+                list1 = input("yes or no: ")
+                if list1 == "yes":
+                    self.currentmap = "Tower Watch"
         elif self.destination == "Earth":
-            print("Lets explore Earth!")
+            if self.currentmap == "The Steppes":
+                print(self.currentmap)
+            elif self.currenmap == "Mothyards":
+                print(self.currentmap)
+            elif self.currentmap == "Lunar Complex":
+                print(self.currentmap)
+            elif self.currentmap == "Skywatch":
+                print(self.currentmap)
+            elif self.currentmap == "Terrestrial Complex":
+                print(self.currentmap)
+            elif self.currentmap == "Forgotten Shore":
+                print(self.currentmap)
+            elif self.currentmap == "Bunker RAS-2":
+                print(self.currentmap)
+            elif self.currentmap == "The Grottos":
+                print(self.currentmap)
+            elif self.currentmap == "Refinery":
+                print(self.currentmap)
+            elif self.currentmap == "The Blast":
+                print(self.currentmap)
+            elif self.currentmap == "Devils' lair":
+                print(self.currentmap)
+            elif self.currentmap == "Rocket Yard":
+                print(self.currentmap)
+            elif self.currentmap == "The Divide":
+                print(self.currentmap)
+            elif self.currentmap == "The Breach":
+                print(self.currentmap)
+            elif self.currentmap == "The Gateway":
+                print(self.currentmap)
+            elif self.currentmap == "Dock 13":
+                print(self.currentmap)
+        elif self.destination == "Moon":
+            print("I'm on the Moon!")
+        elif self.destination == "Venus":
+            print("I'm on Venus?")
+        elif self.destination == "Mars":
+            print("I've made it to Mars")
         else:
             print("travel to another destination.")
 
@@ -383,6 +457,18 @@ class player(character):
         if self.destination == "Tower":
             print("You look at the view from the Tower.")
 
+    def debugcommand(self):
+        print("what command do you want to us?")
+        list1 = input("Exp, Damage, Glimmer? ")
+        if list1 == "Exp":
+            self.giveexp()
+        elif list1 == "Damage":
+            self.takedamage()
+        elif list1 == "Glimmer":
+            self.giveglimmer()
+        else:
+            print(invalidinput)
+
     def giveexp(self):
         print("How much experience?")
         exp = input()
@@ -414,6 +500,7 @@ class player(character):
         print("a hill to discover a larger floating orb")
         t1 = input()
         print("Destiny")
+        t1 = input()
         print("We called it, The Traveler, and its arrival changed us forever.")
         print("Great cities were built on Mars and Venus, Mercury became a garden world, ")
         print("human life-span tripled, it was a time of miracles.")
@@ -424,7 +511,22 @@ class player(character):
         print("Centuries after our Golden Age began, this Darkness found us ")
         print("and that was the end of everything.")
         print("But it was also a beginning. \n")
+        del Cmd['new game']
+        Cmd['create character'] = player.createcharacter
         self.createcharacter()
+
+    def search(self):
+        if self.destination != "Space":
+            if self.destination != "Tower":
+                self.state = "fight"
+                if self.state == "fight":
+                    self.battle()
+            else:
+                print("Travel to a destination")
+        else:
+            print("Travel to a destination")
+    def battle(self):
+        print("You have engaged the enemy")
 
 
 class monster():
@@ -438,6 +540,18 @@ class monster():
         self.status = "Normal"
         self.loot = []
         self.glimmer = 1
+
+
+class dreg(monster):
+    def __init__(self):
+        monster.__init__(self)
+        self.monsterrace = "Fallen"
+        self.subclass = "Dreg"
+        self.level = player.level()
+        self.health = (10 * self.level)
+        self.defense = (1 + self.level)
+        self.attack = (1 + self.level)
+        self.status = "Normal"
 
 
 class armor():
@@ -469,6 +583,8 @@ class weapon():
 invalidinput = "Invalid input, please try again"
 race = ["Human", "Awoken", "Exo", ]
 job = ["Titan", "Hunter", "Warlock", ]
+currentmission = []
+completedmission = []
 inventory2 = []
 weaponinv = []
 primarywinv = ['test1', ]
