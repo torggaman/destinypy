@@ -62,11 +62,15 @@ class Player(Character):
             print("Special: %s" % self.specialw)
             print("Heavy: %s" % self.heavyw)
             print("\n")
+            input("Press Enter to continue")
+            print("\n")
             self.status()
         elif status1 == "armor":
             print("Helmet: %s" % self.armorh)
             print("Chest: %s" % self.armorc)
             print("Legs: %s" % self.armorl)
+            print("\n")
+            input("Press Enter to continue")
             print("\n")
             self.status()
         else:
@@ -219,9 +223,7 @@ class Player(Character):
             print("Make a character first.")
 
     def inventory(self):
-        print("%s glimmer" % self.glimmer)
-        print("%s vanguard marks" % self.vanguardmarks)
-        print("%s Motes of light" % self.moteoflight)
+        print("%d glimmer, %d vanguard marks, %d Motes of light" % (self.glimmer, self.vanguardmarks, self.moteoflight))
         print("Primary Weapons: \n", primarywinv)
         print("Special Weapons: \n", specialwinv)
         print("Heavy Weapons: \n", heavywinv)
@@ -231,14 +233,14 @@ class Player(Character):
 
     def equip(self):
         print("What would you like to equip?")
-        liste = input("weapon or armor: ")
+        liste = input("'weapon', 'armor' or 'close': ")
         if liste == "weapon":
             liste = input("primary, special, or heavy? ")
             if liste == "primary":
                 print("Choose a Primary weapon from below")
                 print(primarywinv)
                 equipweapon = input("Select One: ")
-                if equipweapon == primarywinv:
+                if equipweapon in primarywinv:
                     if self.primaryw == "":
                         self.primaryw = equipweapon
                         primarywinv.remove(equipweapon)
@@ -248,13 +250,15 @@ class Player(Character):
                         self.primaryw = equipweapon
                         primarywinv.remove(equipweapon)
                         print("Equipped: %s" % equipweapon)
+                    print("\n")
+                    self.equip()
                 else:
-                    print(invalidinput)
+                    print("Make sure you typed correctly")
             elif liste == "special":
                 print("Choose a Special weapon from below")
                 print(specialwinv)
                 equipweapon = input("Select One: ")
-                if equipweapon == specialwinv:
+                if equipweapon in specialwinv:
                     if self.specialw == "":
                         self.specialw = equipweapon
                         specialwinv.remove(equipweapon)
@@ -264,13 +268,15 @@ class Player(Character):
                         self.specialw = equipweapon
                         specialwinv.remove(equipweapon)
                         print("Equipped: %s" % equipweapon)
+                    print("\n")
+                    self.equip()
                 else:
                     print(invalidinput)
             elif liste == "heavy":
                 print("Choose a Special weapon from below")
                 print(heavywinv)
                 equipweapon = input("Select One: ")
-                if equipweapon == heavywinv:
+                if equipweapon in heavywinv:
                     if self.heavyw == "":
                         self.heavyw = equipweapon
                         heavywinv.remove(equipweapon)
@@ -280,6 +286,8 @@ class Player(Character):
                         self.heavyw = equipweapon
                         heavywinv.remove(equipweapon)
                         print("Equipped: %s" % equipweapon)
+                    print("\n")
+                    self.equip()
                 else:
                     print(invalidinput)
             else:
@@ -290,7 +298,7 @@ class Player(Character):
                 print("Choose which armor you want to equip")
                 print(armorhinv)
                 equiparmor = input("Select one: ")
-                if armorhinv == equiparmor:
+                if equiparmor in armorhinv:
                     if self.armorh == "":
                         self.armorh = equiparmor
                         armorhinv.remove(equiparmor)
@@ -298,13 +306,15 @@ class Player(Character):
                         armorhinv.append(self.armorh)
                         self.armorh = equiparmor
                         armorhinv.remove(equiparmor)
+                    print("\n")
+                    self.equip()
                 else:
                     print(invalidinput)
             elif list1 == "chest":
                 print("Choose which armor you want to equip")
                 print(armorcinv)
                 equiparmor = input("Select one: ")
-                if armorcinv == equiparmor:
+                if equiparmor in armorcinv:
                     if self.armorc == "":
                         self.armorc = equiparmor
                         armorcinv.remove(equiparmor)
@@ -312,13 +322,15 @@ class Player(Character):
                         armorcinv.append(self.armorc)
                         self.armorc = equiparmor
                         armorcinv.remove(equiparmor)
+                    print("\n")
+                    self.equip()
                 else:
                     print(invalidinput)
             elif list1 == "legs":
                 print("Choose which armor you want to equip")
                 print(armorlinv)
                 equiparmor = input("Select one: ")
-                if armorlinv == equiparmor:
+                if equiparmor in armorlinv:
                     if self.armorl == "":
                         self.armorl = equiparmor
                         armorlinv.remove(equiparmor)
@@ -326,10 +338,14 @@ class Player(Character):
                         armorlinv.append(self.armorl)
                         self.armorl = equiparmor
                         armorlinv.remove(equiparmor)
+                    print("\n")
+                    self.equip()
                 else:
                     print(invalidinput)
             else:
                 print(invalidinput)
+        elif liste == "close":
+            print("Menu closed")
         else:
             print(invalidinput)
 
@@ -597,12 +613,12 @@ currentmission = []
 completedmission = []
 inventory2 = []
 weaponinv = []
-primarywinv = ['test1', ]
-specialwinv = ['test1', ]
-heavywinv = ['test1', ]
-armorhinv = ['test1', ]
-armorcinv = ['test1', ]
-armorlinv = ['test1', ]
+primarywinv = ["test1", ]
+specialwinv = ["test1", ]
+heavywinv = ["test1", ]
+armorhinv = ["test1", ]
+armorcinv = ["test1", ]
+armorlinv = ["test1", ]
 planets = ["tower", "earth", "moon", "venus", "mars", ]
 weaponshop = {'Hawkmoon': 2000, }
 armorhshop = {'VoG Head': 4000, }
@@ -615,11 +631,11 @@ p = Player()
 print("Welcome to Destiny")
 print("Type: help \nfor a list of commands")
 
-Cmd2 = {
+Cmd = {
     'help': Player.help1,
     'new game': Player.newgame,
     }
-Cmd = {
+Cmd2 = {
     'status': Player.status,
     'create character': Player.createcharacter,
     'help': Player.help1,
