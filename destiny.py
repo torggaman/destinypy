@@ -1,6 +1,7 @@
+import random
 
 
-class character():
+class Character():
     def __init__(self):
         self.name = ""
         self.race = ""
@@ -10,9 +11,9 @@ class character():
         self.currentmap = ""
 
 
-class player(character):
+class Player(Character):
     def __init__(self):
-        character.__init__(self)
+        Character.__init__(self)
         self.state = ""
         self.health = 1
         self.defense = 1
@@ -147,12 +148,12 @@ class player(character):
         self.made += 1
         self.destination = "Earth"
         del Cmd['create character']
-        Cmd['status'] = player.status
-        Cmd['orbit'] = player.orbit
-        Cmd['travel'] = player.travel
-        Cmd['equip'] = player.equip
-        Cmd['inventory'] = player.inventory
-        Cmd['debug'] = player.debugcommand
+        Cmd['status'] = Player.status
+        Cmd['orbit'] = Player.orbit
+        Cmd['travel'] = Player.travel
+        Cmd['equip'] = Player.equip
+        Cmd['inventory'] = Player.inventory
+        Cmd['debug'] = Player.debugcommand
 
     def help1(self):
         print(Cmd.keys())
@@ -166,7 +167,9 @@ class player(character):
                     print("Your ship gracefully swoops down and picks you up.")
                     self.destination = "Space"
                     if Cmd.keys() == 'shop':
-                            del Cmd['shop']
+                        del Cmd['shop']
+                    elif Cmd.keys() == 'explore':
+                        del Cmd['explore']
             else:
                 print("You are already in orbit")
         else:
@@ -175,31 +178,37 @@ class player(character):
     def travel(self):
         if self.made == 1:
             if self.destination == "Space":
-                answer = input("Where would you like to go? \n %s: " % planets)
+                print(planets)
+                answer = input("Where would you like to go? ")
                 if answer == "earth":
                     self.destination = "Earth"
                     self.currentmap = ""
+                    Cmd['explore'] = Player.explore
                     print("Initiating Warp Drive")
                     print("Welcome to Earth")
                 elif answer == "tower":
                     self.destination = "Tower"
                     self.currentmap = ""
-                    Cmd['shop'] = player.shop
+                    Cmd['shop'] = Player.shop
+                    Cmd['explore'] = Player.explore
                     print("Initiating Warp Drive")
                     print("Welcome to the Tower")
                 elif answer == "moon":
                     self.destination = "Moon"
                     self.currentmap = ""
+                    Cmd['explore'] = Player.explore
                     print("Initiating Warp Drive")
                     print("Welcome to the Moon")
                 elif answer == "venus":
                     self.destination = "Venus"
                     self.currentmap = ""
+                    Cmd['explore'] = Player.explore
                     print("Initiating Warp Drive")
                     print("Welcome to Venus")
                 elif answer == "mars":
                     self.destination = "Mars"
                     self.currentmap = ""
+                    Cmd['explore'] = Player.explore
                     print("Initiating Warp Drive")
                     print("Welcome to Mars")
                 else:
@@ -358,7 +367,7 @@ class player(character):
         elif self.destination == "Earth":
             if self.currentmap == "The Steppes":
                 print(self.currentmap)
-            elif self.currenmap == "Mothyards":
+            elif self.currentmap == "Mothyards":
                 print(self.currentmap)
             elif self.currentmap == "Lunar Complex":
                 print(self.currentmap)
@@ -512,7 +521,7 @@ class player(character):
         print("and that was the end of everything.")
         print("But it was also a beginning. \n")
         del Cmd['new game']
-        Cmd['create character'] = player.createcharacter
+        Cmd['create character'] = Player.createcharacter
         self.createcharacter()
 
     def search(self):
@@ -525,11 +534,12 @@ class player(character):
                 print("Travel to a destination")
         else:
             print("Travel to a destination")
+
     def battle(self):
         print("You have engaged the enemy")
 
 
-class monster():
+class Monster():
     def __init__(self):
         self.monsterrace = ""
         self.subclass = ""
@@ -542,19 +552,19 @@ class monster():
         self.glimmer = 1
 
 
-class dreg(monster):
+class Dreg(Monster):
     def __init__(self):
-        monster.__init__(self)
+        Monster.__init__(self)
         self.monsterrace = "Fallen"
         self.subclass = "Dreg"
-        self.level = player.level()
+        self.level = Player.level
         self.health = (10 * self.level)
         self.defense = (1 + self.level)
         self.attack = (1 + self.level)
         self.status = "Normal"
 
 
-class armor():
+class Armor():
     def __int__(self):
         self.name = ""
         self.job = ""
@@ -565,7 +575,7 @@ class armor():
         self.strength = 1
 
 
-class weapon():
+class Weapon():
     def __init__(self):
         self.name = ""
         self.typew = ""
@@ -600,40 +610,60 @@ armorcshop = {'VoG Chest': 3000, }
 armorlshop = {'VoG Legs': 2000, }
 
 
-p = player()
+p = Player()
 
 print("Welcome to Destiny")
 print("Type: help \nfor a list of commands")
 
-Cmd = {
-    'help': player.help1,
-    'new game': player.newgame,
-    }
 Cmd2 = {
-    'status': player.status,
-    'create character': player.createcharacter,
-    'help': player.help1,
-    'travel': player.travel,
-    'inventory': player.inventory,
-    'equip': player.equip,
-    'explore': player.explore,
-    'glimmer': player.giveglimmer,
-    'go to orbit': player.orbit,
-    'xp': player.giveexp,
-    'take damage': player.takedamage,
+    'help': Player.help1,
+    'new game': Player.newgame,
     }
+Cmd = {
+    'status': Player.status,
+    'create character': Player.createcharacter,
+    'help': Player.help1,
+    'travel': Player.travel,
+    'inventory': Player.inventory,
+    'equip': Player.equip,
+    'explore': Player.explore,
+    'glimmer': Player.giveglimmer,
+    'go to orbit': Player.orbit,
+    'xp': Player.giveexp,
+    'take damage': Player.takedamage,
+    'debug': Player.debugcommand,
+    'search': Player.search,
+    'new game': Player.newgame,
+    'view': Player.view,
+    'shop': Player.shop,
+    }
+"""
 while p.health > 0:
     line = input("> ")
-    args = line.split()
-    if len(args) > 0:
+    arg = line.replace(" ", "")
+    if len(arg) > 0:
         commandFound = False
         for c in Cmd.keys():
-            if args[0] == c[:len(args[0])]:
+            if arg[0] == c[:len(arg[0])]:
+                print(arg)
                 Cmd[c](p)
                 commandFound = True
                 break
         if not commandFound:
             print("%s doesn't understand the suggestion." % p.name)
+"""
+while p.health > 0:
+    line = input("> ")
+    if len(line) > 0:
+        commandFound = False
+        for c in Cmd.keys():
+            if line == c:
+                Cmd[c](p)
+                commandFound = True
+                break
+        if not commandFound:
+            print(invalidinput)
+
 
 if p.health <= 0:
     print("You were killed in battle")
