@@ -22,14 +22,23 @@ class Player(Character):
         self.explevel = 1
         self.experience = 1
         self.attack = 1
+        self.intellect = 1
+        self.discipline = 1
+        self.strength = 1
         self.glimmer = 1
         self.moteoflight = 1
         self.vanguardmarks = 1
         self.commendations = 1
         self.made = 0
         self.primaryw = ""
+        self.primaryammo = 1
+        self.primarymaxammo = 1
         self.specialw = ""
+        self.specialammo = 1
+        self.specialmaxammo = 1
         self.heavyw = ""
+        self.heavyammo = 1
+        self.heavymaxammo = 1
         self.armorh = ""
         self.armorc = ""
         self.armorl = ""
@@ -152,11 +161,14 @@ class Player(Character):
         self.made += 1
         self.destination = "Earth"
         del Cmd['create character']
+        """
         Cmd['status'] = Player.status
-        Cmd['orbit'] = Player.orbit
-        Cmd['travel'] = Player.travel
         Cmd['equip'] = Player.equip
         Cmd['inventory'] = Player.inventory
+        """
+        Cmd['menu'] = Player.menu
+        Cmd['travel'] = Player.travel
+        Cmd['orbit'] = Player.orbit
         Cmd['debug'] = Player.debugcommand
 
     def help1(self):
@@ -230,6 +242,8 @@ class Player(Character):
         print("Headgear: \n", armorhinv)
         print("Chest: \n", armorcinv)
         print("Legs: \n", armorlinv)
+        list1 = input("Press enter to continue...")
+        print("")
 
     def equip(self):
         print("What would you like to equip?")
@@ -554,6 +568,68 @@ class Player(Character):
     def battle(self):
         print("You have engaged the enemy")
 
+    def inspect(self):
+        print(options)
+        list1 = input("What would you like to inspect? ")
+        if list1 == "weapon":
+            print("'primary', 'special', or 'heavy' ")
+            list1 = input("Which type of weapon do you want to inspect? ")
+            if list1 == "primary":
+                print("Currently Equipped: %s" % self.primaryw)
+                print("Primary Weapon Inventory")
+                print(primarywinv)
+                list1 = input("Which would you like to inspect? ")
+                if list1 in self.primaryw or primarywinv:
+                    print("Name: %s" % list1)
+                    """
+                    print("Attack: %d" % list1.get('Attack'))
+                    print("Range: %d" % list1.get('Range'))
+                    print("Impact: %d" % list1.get('Impact'))
+                    print("Rate of Fire: %d" % list1.get('Rate of Fire'))
+                    print("Reload: %d" % list1.get('Reload'))
+                    print("Stability: %d" % list1.get('Stability'))
+                    print("Max Magazine Size: %d" % list1.get('Max Magazine'))
+                    """
+
+                else:
+                    print("Please check the spelling")
+            elif list1 == "special":
+                print()
+            elif list1 == "heavy":
+                print()
+            else:
+                print("Make sure you typed correctly")
+        elif list1 == "armor":
+            print("'head', 'chest' or 'legs' ")
+            list1 = input("Which type of armor do you want to inspect? ")
+            if list1 == "head":
+                print()
+            elif list1 == "chest":
+                print()
+            elif list1 == "legs":
+                print()
+            else:
+                print("Make sure you typed correctly")
+        else:
+            print("Make sure you typed correctly")
+
+    def menu(self):
+        print("Menu Opened")
+        print("What would you like to do?")
+        list1 = input("'inventory', 'equip', 'status', 'inspect', or 'close'? ")
+        if list1 == "inventory":
+            self.inventory()
+        elif list1 == "equip":
+            self.equip()
+        elif list1 == "status":
+            self.status()
+        elif list1 == "close":
+            print("Menu closed")
+        elif list1 == "inspect":
+            self.inspect()
+        else:
+            print("Make sure you typed correctly")
+
 
 class Monster():
     def __init__(self):
@@ -605,7 +681,7 @@ class Weapon():
         self.stability = 1
         self.reload = 1
 
-
+options = ['weapon', 'armor', 'close']
 invalidinput = "Invalid input, please try again"
 race = ["Human", "Awoken", "Exo", ]
 job = ["Titan", "Hunter", "Warlock", ]
@@ -613,7 +689,7 @@ currentmission = []
 completedmission = []
 inventory2 = []
 weaponinv = []
-primarywinv = ["test1", ]
+primarywinv = ["test1", "testweapon", ]
 specialwinv = ["test1", ]
 heavywinv = ["test1", ]
 armorhinv = ["test1", ]
@@ -624,6 +700,17 @@ weaponshop = {'Hawkmoon': 2000, }
 armorhshop = {'VoG Head': 4000, }
 armorcshop = {'VoG Chest': 3000, }
 armorlshop = {'VoG Legs': 2000, }
+
+testweapon = {
+    'Attack': 10,
+    'Range': 1,
+    'Impact': 1,
+    'Rate of Fire': 1,
+    'Reload': 1,
+    'Stability': 1,
+    'Current Magazine': 1,
+    'Max Magazine': 1,
+    }
 
 
 p = Player()
