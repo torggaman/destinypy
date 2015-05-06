@@ -11,10 +11,18 @@ class Character():
         self.currentmap = ""
 
 
+
+class Missions():
+    def __int__(self):
+        self.currentmission = ""
+        self.completedmission = []
+
+
 class Player(Character):
     def __init__(self):
         Character.__init__(self)
         self.state = ""
+        self.enemy = "Dreg"
         self.health = 1
         self.defense = 1
         self.light = 1
@@ -566,7 +574,58 @@ class Player(Character):
             print("Travel to a destination")
 
     def battle(self):
+        if self.state == "fight":
+            print("An enemy has appeared")
         print("You have engaged the enemy")
+
+    def practice(self):
+        if monster1.status != "dead":
+            if self.state != "fight":
+                print("What would you like to fight?")
+                print(monsterlist)
+                monsterselect = input("Select one: ")
+                if monsterselect in monsterlist:
+                    self.state = "fight"
+                    monster = monsterselect
+                    print("A %s has appeared" % monster)
+                    print("What would you like to do? \n", actions)
+                    list1 = input("Select one: ")
+                    if list1 == "shoot":
+                        print("pewpew")
+                        monster1.health -= self.attack
+                        if monster1.health < 1:
+                            monster1.state = "dead"
+                            print("%s has fallen" % monster1.subclass)
+                    elif list1 == "grenade":
+                        print("Tossing grenade")
+                    elif list1 == "super":
+                        print("Super coming up")
+                    elif list1 == "melee":
+                        print("Welcome to earf!")
+                    self.practice()
+                else:
+                    print("Check spelling")
+            else:
+                print("What would you like to do? \n", actions)
+                list1 = input("Select one: ")
+                if list1 == "shoot":
+                    print("pewpew")
+                    monster1.health -= self.attack
+                    if monster1.health < 1:
+                        monster1.status = "dead"
+                        self.state = ""
+                        print("%s has fallen" % monster1.subclass)
+                        self.practice()
+                    else:
+                        self.practice()
+        elif monster1.status == "dead":
+            monster1.status = "Normal"
+            monster1.health += monster1.healthmax
+            print("The enemy has died")
+            print("You gained %d experience" % monster1.exp)
+            print("You gained %d glimmer" % monster1.glimmer)
+            self.glimmer += monster1.glimmer
+            self.experience += monster1.exp
 
     def inspect(self):
         print(options)
@@ -580,9 +639,11 @@ class Player(Character):
                 print(primarywinv)
                 list1 = input("Which would you like to inspect? ")
                 if list1 in self.primaryw or primarywinv:
-                    print("Name: %s" % list1)
+                    for x in list1.values():
+                        print("Name: %s" % x('name'))
+                        print("Attack: %d" % x('attack'))
                     """
-                    print("Attack: %d" % list1.get('Attack'))
+                    print("Attack: %d" % list1.values('Attack'))
                     print("Range: %d" % list1.get('Range'))
                     print("Impact: %d" % list1.get('Impact'))
                     print("Rate of Fire: %d" % list1.get('Rate of Fire'))
@@ -590,7 +651,6 @@ class Player(Character):
                     print("Stability: %d" % list1.get('Stability'))
                     print("Max Magazine Size: %d" % list1.get('Max Magazine'))
                     """
-
                 else:
                     print("Please check the spelling")
             elif list1 == "special":
@@ -649,11 +709,14 @@ class Dreg(Monster):
         Monster.__init__(self)
         self.monsterrace = "Fallen"
         self.subclass = "Dreg"
-        self.level = Player.level
-        self.health = (10 * self.level)
+        self.level = 1
+        self.health = 1
+        self.healthmax = (1 * self.level)
         self.defense = (1 + self.level)
         self.attack = (1 + self.level)
         self.status = "Normal"
+        self.exp = 100*self.level
+        self.glimmer = 25*self.level
 
 
 class Armor():
@@ -667,12 +730,17 @@ class Armor():
         self.strength = 1
 
 
+class Primary():
+    def __init__(self):
+        self.typew = "Primary"
+
+
 class Weapon():
     def __init__(self):
         self.name = ""
         self.typew = ""
         self.guntype = ""
-        self.attack = ""
+        self.attack = 1
         self.ammoclip = 1
         self.maxammo = 1
         self.rof = 1
@@ -680,6 +748,22 @@ class Weapon():
         self.range = 1
         self.stability = 1
         self.reload = 1
+
+"""
+class testweapon(Primary):
+    def __init__(self):
+        Primary.__init__(self)
+        self.name = "Test Weapon"
+        self.guntype = "Hand Cannon"
+        self.attack = 1
+        self.ammoclip = 10
+        self.maxammo = 10
+        self.rof = 1
+        self.impact = 1
+        self.range = 1
+        self.stability = 1
+        self.reload = 1
+"""
 
 options = ['weapon', 'armor', 'close']
 invalidinput = "Invalid input, please try again"
@@ -701,28 +785,32 @@ armorhshop = {'VoG Head': 4000, }
 armorcshop = {'VoG Chest': 3000, }
 armorlshop = {'VoG Legs': 2000, }
 
+monsterlist = ['Dreg', ]
+actions = ['shoot', 'grenade', 'Super', 'melee']
+monster1 = Dreg()
+
 testweapon = {
-    'Attack': 10,
-    'Range': 1,
-    'Impact': 1,
-    'Rate of Fire': 1,
-    'Reload': 1,
-    'Stability': 1,
+    'name': "Test Weapon",
+    'attack': 10,
+    'range': 1,
+    'impact': 1,
+    'rof': 1,
+    'reload': 1,
+    'stability': 1,
     'Current Magazine': 1,
     'Max Magazine': 1,
     }
-
 
 p = Player()
 
 print("Welcome to Destiny")
 print("Type: help \nfor a list of commands")
 
-Cmd = {
+Cmd2 = {
     'help': Player.help1,
     'new game': Player.newgame,
     }
-Cmd2 = {
+Cmd = {
     'status': Player.status,
     'create character': Player.createcharacter,
     'help': Player.help1,
@@ -739,6 +827,8 @@ Cmd2 = {
     'new game': Player.newgame,
     'view': Player.view,
     'shop': Player.shop,
+    'inspect': Player.inspect,
+    'practice': Player.practice,
     }
 """
 while p.health > 0:
