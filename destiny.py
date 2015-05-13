@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 
 class Character():
@@ -41,6 +41,7 @@ class Player(Character):
         self.primaryw = ""
         self.primaryammo = 1
         self.primarymaxammo = 1
+        self.primaryconsumption = 1
         self.specialw = ""
         self.specialammo = 1
         self.specialmaxammo = 1
@@ -579,6 +580,34 @@ class Player(Character):
         print("You have engaged the enemy")
 
     def practice(self):
+        monster = Practicemonster(Dreg, 10, 5)
+        if monster.health <= 0:
+            print("You have destroyed the enemy.")
+        else:
+            print("Hello")
+            print("[1]Primary, [2]Special, [3]Heavy, [4]Status, [5]Reload")
+            action = input("What would you like to do? ")
+            if int(action) == 1:
+                if self.primaryammo >= self.primaryconsumption:
+                    print("You fire your weapon at the Enemy")
+                    totalattack = randint(self.attack, self.attack + self.level)
+                    print("You dealt %d to the Enemy" % totalattack)
+                    monster.health -= int(totalattack)
+                    self.primaryammo -= 1
+                    self.practice()
+                else:
+                    print("You need to reload")
+                    self.practice()
+            elif action == "4":
+                print("%s has %d health left" % (monster.name, monster.health))
+                print("Primary Weapon: %d / %d" % (self.primaryammo, self.primarymaxammo))
+                self.practice()
+            elif action == "5":
+                print("You reload your weapon")
+                self.primaryammo = self.primarymaxammo
+                self.practice()
+
+        """
         if monster1.status != "dead":
             if self.state != "fight":
                 print("What would you like to fight?")
@@ -626,6 +655,7 @@ class Player(Character):
             print("You gained %d glimmer" % monster1.glimmer)
             self.glimmer += monster1.glimmer
             self.experience += monster1.exp
+            """
 
     def inspect(self):
         print(options)
@@ -717,6 +747,12 @@ class Dreg(Monster):
         self.status = "Normal"
         self.exp = 100*self.level
         self.glimmer = 25*self.level
+
+class Practicemonster():
+    def __init__(self, name, health, attack):
+        self.name = name
+        self.health = health
+        self.attack = attack
 
 
 class Armor():
@@ -810,6 +846,7 @@ Cmd2 = {
     'help': Player.help1,
     'new game': Player.newgame,
     }
+
 Cmd = {
     'status': Player.status,
     'create character': Player.createcharacter,
@@ -830,6 +867,7 @@ Cmd = {
     'inspect': Player.inspect,
     'practice': Player.practice,
     }
+
 """
 while p.health > 0:
     line = input("> ")
@@ -845,6 +883,7 @@ while p.health > 0:
         if not commandFound:
             print("%s doesn't understand the suggestion." % p.name)
 """
+
 while p.health > 0:
     line = input("> ")
     if len(line) > 0:
