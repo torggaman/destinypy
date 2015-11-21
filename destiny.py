@@ -586,8 +586,8 @@ class Player(Character):
         else:
             print("Hello")
             print("[1]Primary, [2]Special, [3]Heavy, [4]Status, [5]Reload")
-            action = input("What would you like to do? ")
-            if int(action) == 1:
+            action = int(input("What would you like to do? "))
+            if action == 1:
                 if self.primaryammo >= self.primaryconsumption:
                     print("You fire your weapon at the Enemy")
                     totalattack = randint(self.attack, self.attack + self.level)
@@ -598,14 +598,18 @@ class Player(Character):
                 else:
                     print("You need to reload")
                     self.practice()
-            elif action == "4":
+            elif action == 4:
                 print("%s has %d health left" % (monster.name, monster.health))
                 print("Primary Weapon: %d / %d" % (self.primaryammo, self.primarymaxammo))
                 self.practice()
-            elif action == "5":
-                print("You reload your weapon")
-                self.primaryammo = self.primarymaxammo
-                self.practice()
+            elif action == 5:
+                if self.primaryammo >= self.primarymaxammo:
+                    print("No need to reload")
+                    self.practice()
+                else:
+                    print("You reload your weapon")
+                    self.primaryammo = self.primarymaxammo
+                    self.practice()
 
         """
         if monster1.status != "dead":
